@@ -1,0 +1,7 @@
+{
+    "name": "arya-0011/wordpress-deployment",
+    "description": "github action workflow",
+    "require": {
+        "monolog/monolog": "^2.0"
+    }
+}
