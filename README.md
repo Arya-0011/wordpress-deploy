@@ -6,9 +6,6 @@ using Nginx as the web server, LEMP (Linux, Nginx, MySQL, PHP) stack, and GitHub
 Actions as the CI/CD automation tool. The deployment process should follow security
 best practices and ensure optimal performance of the website.
 
-
-
-
 ## Tech Stack
 
 **Cloud Provider:** AWS
@@ -233,3 +230,93 @@ on your server, you can copy the private key from here
 ```bash
 cat ~/.ssh/github-actions
 ```
+
+
+## Instruction for more
+
+I have added manual approval approch also with github Action.
+
+* When code is pushed to master ot main deploy.yml will be trigger and first it will deploy to staging server first then It waits for approval to deploy to production where only authorized person can approve that.
+
+```bash
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_staging:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          composer install --no-dev --optimize-autoloader
+
+      - name: Deploy to staging server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.STAGING_SERVER_IP }}
+          username: ${{ secrets.STAGING_SERVER_USER }}
+          key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
+          source: ./
+          target: /var/www/inceptive/
+
+  manual_approval:
+    needs: [deploy_staging]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Manual Approval
+        id: approval
+        uses: trstringer/manual-approval@v1
+        with:
+          approve-message: "Approve deployment to production"
+          deny-message: "Deny deployment to production"
+          secret: ${{ secrets.MANUAL_APPROVAL_SECRET }}
+          approvers: "Arya-0011"
+
+  deploy_production:
+    needs: [manual_approval]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          composer install --no-dev --optimize-autoloader
+
+      - name: Deploy to production server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: ./
+          target: /var/www/inceptive/
+
+```
+

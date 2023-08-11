@@ -1,0 +1,86 @@
+server {
+    listen 80;
+    server_name inceptive www.inceptive;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name inceptive www.inceptive;
+
+    ssl_certificate /etc/nginx/ssl/self.crt;
+    ssl_certificate_key /etc/nginx/ssl/self.key;
+
+    root /var/www/inceptive;
+    index index.php index.html;
+
+    # Enable Gzip Compression
+    gzip on;
+    gzip_types text/plain text/css application/javascript image/*;
+
+    # Leverage Browser Caching
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000";
+    }
+
+    # Limit request size to prevent abuse
+    client_max_body_size 10M;
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.1-fpm.sock;
+
+        # Optimize PHP-FPM settings
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_busy_buffers_size 64k;
+        fastcgi_temp_file_write_size 256k;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+
+    # Optimize TCP settings
+    tcp_nodelay on;
+    tcp_nopush on;
+    keepalive_timeout 30;
+    client_body_timeout 10;
+    client_header_timeout 10;
+    send_timeout 10;
+
+    # Enable Keep-Alive Connections
+    keepalive_requests 100;
+
+    # Prevent access to hidden files and directories
+    location ~ /\. {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+
+    # Prevent access to wp-config.php
+    location ~* wp-config\.php {
+        deny all;
+    }
+
+    # Disable server tokens
+    server_tokens off;
+
+    # Protect against clickjacking attacks
+    add_header X-Frame-Options "SAMEORIGIN";
+
+    # Protect against MIME-type sniffing
+    add_header X-Content-Type-Options "nosniff";
+
+    # Enable Cross-Origin Resource Sharing (CORS)
+    # Add your own CORS configuration here
+
+    # Other server configuration directives...
+
+}
