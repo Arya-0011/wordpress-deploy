@@ -1,4 +1,4 @@
-
+## I have added all file and configuration in Pipeline-Files Directory
 # wordpress-deployment
 
 The task is to set up an automated deployment process for a WordPress website
@@ -324,4 +324,4 @@ jobs:
 
 ## I have integrated Relic as a Monitoring tool.
 
-![App Screenshot](./Relic.png)
+[App Screenshot](./Relic.png)
