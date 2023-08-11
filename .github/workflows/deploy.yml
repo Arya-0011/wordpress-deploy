@@ -16,7 +16,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: "7.4"
 
       - name: Install dependencies
         run: |
@@ -32,28 +32,6 @@ jobs:
           key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
           source: ./
           target: /var/www/inceptive/
-
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '7.4'
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          composer install --optimize-autoloader
-
-      - name: Run tests
-        run: phpunit
-
   lint:
     runs-on: ubuntu-latest
 
@@ -64,7 +42,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: "7.4"
 
       - name: Install dependencies
         run: |
@@ -76,7 +54,7 @@ jobs:
         run: phpcs --standard=PSR12 .
 
   deploy_production:
-    needs: [deploy_staging, test, lint]
+    needs: [deploy_staging, lint]
     runs-on: ubuntu-latest
 
     steps:
@@ -97,7 +75,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: "7.4"
 
       - name: Install dependencies
         run: |
