@@ -321,3 +321,7 @@ jobs:
 ```
 
 **I have added all the necessary file for this project on Pipeline-Files Directory**
+
+## I have integrated Relic as a Monitoring tool.
+
+![App Screenshot](./Relic.png)
