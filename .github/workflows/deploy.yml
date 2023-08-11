@@ -46,6 +46,8 @@ jobs:
         with:
           approve-message: "Approve deployment to production"
           deny-message: "Deny deployment to production"
+          secret: ${{ secrets.MANUAL_APPROVAL_SECRET }}
+          approvers: "Arya-0011"
 
       - name: Check Manual Approval
         run: |
