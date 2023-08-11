@@ -33,14 +33,19 @@ jobs:
           source: ./
           target: /var/www/inceptive/
 
-  deploy_production:
+  manual_approval:
     needs: [deploy_staging]
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Manual Approval
         id: approval
-        run: echo "Approve deployment to production"
+        uses: trstringer/manual-approval@v1
+        with:
+          approve-message: "Approve deployment to production"
+          deny-message: "Deny deployment to production"
 
       - name: Check Manual Approval
         run: |
@@ -49,6 +54,11 @@ jobs:
             exit 1
           fi
 
+  deploy_production:
+    needs: [manual_approval]
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
