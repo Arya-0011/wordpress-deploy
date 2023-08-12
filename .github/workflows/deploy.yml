@@ -32,6 +32,9 @@ jobs:
           key: ${{ secrets.STAGING_SSH_PRIVATE_KEY }}
           source: ./
           target: /var/www/inceptive/
+          script: |
+            sudo chown -R www-data:www-data /var/www/inceptive
+            sudo chmod -R 755 /var/www/inceptive
 
   manual_approval:
     needs: [deploy_staging]
@@ -76,3 +79,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: ./
           target: /var/www/inceptive/
+          script: |
+            sudo chown -R www-data:www-data /var/www/inceptive
+            sudo chmod -R 755 /var/www/inceptive
