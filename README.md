@@ -125,6 +125,9 @@ sudo systemctl reload nginx
 
 ```bash
 sudo mkdir -p /var/www/wordpress
+sudo usermod -aG ubuntu www-data
+sudo chown -R ubuntu:www-data /path/to/your/project
+sudo chmod -R 775 /path/to/your/project
 curl -O https://wordpress.org/latest.tar.gz
 tar -xvzf latest.tar.gz --strip-components=1
 cp wp-config-sample.php wp-config.php
@@ -135,7 +138,7 @@ cp wp-config-sample.php wp-config.php
 ```bash
 sudo nano wp-config.php
 ```
-
+make sure to change this for mysql connection
 ```bash
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'wordpressuser');
