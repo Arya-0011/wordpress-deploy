@@ -1,4 +1,4 @@
-## I have added all file and configuration in Pipeline-Files Directory
+## I have added all file and configuration in Pipeline-Files Directory and the security perameters.
 # wordpress-deployment
 
 The task is to set up an automated deployment process for a WordPress website
