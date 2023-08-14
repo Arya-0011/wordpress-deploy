@@ -1,4 +1,7 @@
-## I have added all file and configuration in Pipeline-Files Directory and the security perameters.
+## I have added all file and configuration in Pipeline-Files Directory and the security perameters.\
+# If you want direct deployment pipeline then you can use Pipeline-Files/yml/direct-deploy.yml
+# If you want manual approval (First on automatic deployment on staging then need approval for live server) deployment pipeline then you can use Pipeline-Files/yml/manual-approval.yml
+
 # wordpress-deployment
 
 The task is to set up an automated deployment process for a WordPress website
