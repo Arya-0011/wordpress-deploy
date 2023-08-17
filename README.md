@@ -134,6 +134,20 @@ tar -xvzf latest.tar.gz --strip-components=1
 cp wp-config-sample.php wp-config.php
 ```
 
+## creating new User for depoyment of the code on EC2:
+
+```bash
+ssh ubuntu@your_server_ip
+sudo su - deployer
+mkdir ~/.ssh
+chmod 700 ~/.ssh
+ssh-keygen -t rsa -b 4096 -C "deployer@example.com"
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+exit
+```
+## The .ssh Directory or authorized_keys file is not there then create on respectively
+
 * Configure the wp-config.php file with your MySQL credentials
 
 ```bash
@@ -241,6 +255,8 @@ cat ~/.ssh/github-actions
 I have added manual approval approch also with github Action.
 
 * When code is pushed to master ot main deploy.yml will be trigger and first it will deploy to staging server first then It waits for approval to deploy to production where only authorized person can approve that.
+
+use the deployer user ssh key instead
 
 ```bash
 name: Deploy to Production
