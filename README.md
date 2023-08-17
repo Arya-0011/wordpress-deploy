@@ -144,9 +144,14 @@ chmod 700 ~/.ssh
 ssh-keygen -t rsa -b 4096 -C "deployer@example.com"
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
+sudo chown -R deployer:www-data /var/www/wordpress
+sudo chown deployer:www-data /etc/nginx/sites-available/your_domain
+sudo visudo
+-- append this at bottom:
+deployer ALL=(ALL) NOPASSWD: /usr/sbin/service nginx restart
 exit
 ```
-## The .ssh Directory or authorized_keys file is not there then create on respectively
+## If the .ssh Directory or authorized_keys file is not there then create on manually respectively
 
 * Configure the wp-config.php file with your MySQL credentials
 
@@ -256,7 +261,7 @@ I have added manual approval approch also with github Action.
 
 * When code is pushed to master ot main deploy.yml will be trigger and first it will deploy to staging server first then It waits for approval to deploy to production where only authorized person can approve that.
 
-use the deployer user ssh key instead
+use the deployer user ssh key and username instead
 
 ```bash
 name: Deploy to Production
