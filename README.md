@@ -133,7 +133,7 @@ curl -O https://wordpress.org/latest.tar.gz
 tar -xvzf latest.tar.gz --strip-components=1
 cp wp-config-sample.php wp-config.php
 ```
-
+## Optional
 ## creating new User for depoyment of the code on EC2:
 
 ```bash
@@ -145,7 +145,6 @@ ssh-keygen -t rsa -b 4096 -C "deployer@example.com"
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 sudo chown -R deployer:www-data /var/www/wordpress
-sudo chown deployer:www-data /etc/nginx/sites-available/your_domain
 sudo visudo
 -- append this at bottom:
 deployer ALL=(ALL) NOPASSWD: /usr/sbin/service nginx restart
